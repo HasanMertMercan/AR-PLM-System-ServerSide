@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operations>
+	<operation>
+		<id>1234</id>
+		<name>Hasan Mert Mercan</name>
+		<profession>1</profession>
+	</operation>
+	<operation>
+		<id>4321</id>
+		<name>Fatma Kübra Tugsal</name>
+		<profession>2</profession>
+	</operation>
+</operations>
+
+
+<!-- profession: "1" for electrical "2" for mechanical -->

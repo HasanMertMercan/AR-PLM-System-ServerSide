@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users>
+	<user>
+		<id>1234</id>
+		<name>Hasan Mert Mercan</name>
+		<profession>1</profession>
+		<level>1</level>
+	</user>
+	<user>
+		<id>4321</id>
+		<name>Fatma Kübra Tugsal</name>
+		<profession>2</profession>
+		<level>2</level>
+	</user>
+</users>
+
+<!-- level: "3" for junior "2" for medium "1" for expert -->
+<!-- profession: "1" for electrical "2" for mechanical -->
