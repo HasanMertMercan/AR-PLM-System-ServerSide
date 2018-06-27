@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -30,6 +31,8 @@ import com.teamcenter.services.strong.core._2008_06.DataManagement.RevisionOutpu
 import com.teamcenter.clientx.*;
 import com.teamcenter.services.strong.core.DataManagementService;
 import com.teamcenter.services.strong.core.SessionService;
+import com.teamcenter.services.strong.core._2008_06.DataManagement.AttrInfo;
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -39,6 +42,7 @@ public class Main {
 	private AppXSession session;
 	private User user;
 	private FileManagementUtility fileManager;
+	private UUID clientId = UUID.randomUUID();
 	
 	public Main(String teamcenterHost, String username, String password)
 	{
@@ -77,10 +81,10 @@ public class Main {
 	    
 	    
 	    //Write the code which determines which list will be returned based on user level!!
-	    if(Integer.parseInt(gcu[3]) == 1 || /*Something Represents the Amateur User*/) {
+	    if(gcu[3].equals("3")/*|| operationType == userProfession*/) {
 	    	return amateurList;
 	    }
-	    else if(Integer.parseInt(gcu[3]) == 2 /*Something Represents the Medium User*/) {
+	    else if(gcu[3].equals("2")) {
 	    	return mediumList;
 	    }
 	    else {
@@ -88,6 +92,7 @@ public class Main {
 	    }
 	}
 	
+	/*This section will be in the AR application
 	//Request for additional information
 	@SuppressWarnings("null")
 	public int updateUserStatus() throws NotLoadedException 
@@ -96,51 +101,56 @@ public class Main {
 		String[] gcu = userDetails.getCurrentUser(); 
 		int status = Integer.parseInt(gcu[3]);
 		
-		if(Integer.parseInt(gcu[3]) != 3) 
+		if(!gcu[3].equals("3")) 
 		{
 			status++;
 		}
 		else 
 		{
-			System.out.println("The information which has been displayed is the most basic information. Please contact with your supervisor for mor info");
+			System.out.println("The information which has been displayed is the most basic information. Please contact with your supervisor for more info");
 		}
-		
+
 		return status;
-	}
+	}*/
 	
 	//Get operation's Id and the instruction file
 	
-	/*public File getFilesFromTeamcenter(String id, String filename) throws Exception
+	public File getFilesFromTeamcenter(String id, String filename) throws Exception
 	{
 		DataManagementService dmService = DataManagementService.getService(AppXSession.getConnection());
 
-		*//** Prepare the search criteria *//*
+		/** Prepare the search criteria */
 		GetItemAndRelatedObjectsInfo[] infos = new GetItemAndRelatedObjectsInfo[1];
 		infos[0] = new GetItemAndRelatedObjectsInfo();
-		*//** To be able to call the service method, a client ID seems to be needed (it does not have to be a UUID) *//*
+		
+		/** To be able to call the service method, a client ID seems to be needed (it does not have to be a UUID) */
 		infos[0].clientId = clientId.toString();
 		infos[0].itemInfo.ids = new AttrInfo[]{new AttrInfo()};
 		String[] idParts = id.split("/");
-		*//** Get items associated with the ID stored in the QR code *//*
+		
+		/** Get items associated with the ID stored in the QR code */
 		infos[0].itemInfo.ids[0] = new AttrInfo();
 		infos[0].itemInfo.ids[0].name = "item_id";
 		infos[0].itemInfo.ids[0].value = idParts[0];
 		infos[0].itemInfo.useIdFirst = true;
 		infos[0].revInfo.processing = "All"; // Process/retrieve all revisions associated to a found item
 		infos[0].datasetInfo.filter.processing = "All"; // Process/retrieve all data sets associated to a found item
-		*//** This filter only retrieves data sets with this particular name *//*
-		*//** Note: It does not apply to the name of the actual file contained in the data set *//*
+		
+		/** This filter only retrieves data sets with this particular name */
+		/** Note: It does not apply to the name of the actual file contained in the data set */
 		infos[0].datasetInfo.filter.name = filename; // recycling_instructions.txt and recycling_instructions.png
-		*//**********************//*
-		*//** Call the services *//*
-		*//**********************//*
+		
+		/**********************/
+		/** Call the services */
+		/**********************/
 		GetItemAndRelatedObjectsResponse response = dmService.getItemAndRelatedObjects(infos);
 		if (response.output.length == 0)
 		throw new Exception("No item with the ID " + id + " was found");
 		else if (response.output.length > 1)
 		throw new Exception("More than one item with the ID " + id + " was found");
 		GetItemAndRelatedObjectsItemOutput itemOutput = response.output[0];
-		*//** Print some debug info *//*
+		
+		/** Print some debug info */
 		String name = itemOutput.item.get_object_name();
 		System.out.println("Item name: " + name);
 		System.out.println("Item object string: " + itemOutput.item.get_object_string());
@@ -150,7 +160,7 @@ public class Main {
 	
 		return null;
 		
-	}*/
+	}
 	
 	private void createTeamcenterSession(String host, String username, String password)
 	{
@@ -169,7 +179,9 @@ public class Main {
 		}
 		/** Get the session service and set the object property policy in Teamcenter */
 		SessionService sessionService = SessionService.getService(AppXSession.getConnection());
+		
 		ObjectPropertyPolicy oppolicy = new ObjectPropertyPolicy();
+		
 		String path = Main.class.getResource("/oppolicy.xml").toString();
 		
 		try

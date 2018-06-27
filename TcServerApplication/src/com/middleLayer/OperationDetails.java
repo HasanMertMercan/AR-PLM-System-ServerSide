@@ -20,10 +20,10 @@ public class OperationDetails {
 			for(int i = 0; i < operationList.size(); i++) 
 			{
 				try {
-					if(operationList.get(i).getId() == user.get_user_id()) 	//Compare with operation's id
+					if(operationList.get(i).getId() == user.get_user_id()) 	//Compare with operation's id not with userid
 					{
 						currentOperation[0] = operationList.get(i).getId();			//User Id
-						currentOperation[1] = operationList.get(i).getName();			//User Name
+						currentOperation[1] = operationList.get(i).getName();		//User Name
 						currentOperation[2] = operationList.get(i).getProfession();	//User Profession
 						
 						break createCurrentOperation;
