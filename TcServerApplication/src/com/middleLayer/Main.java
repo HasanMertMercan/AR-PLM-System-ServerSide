@@ -50,7 +50,7 @@ public class Main {
 	}
 	
 	@SuppressWarnings("null")
-	private List<String> getInstructions(String id) throws Exception
+	private List<String> getInstructions(String operationId) throws Exception
 	{
 		List<String> amateurList = new ArrayList<String>();
 		UserDetails userDetails = null;
@@ -58,7 +58,7 @@ public class Main {
 		
 	    try
 	    {
-	      amateurList = Files.readAllLines(getFilesFromTeamcenter(id, "").toPath());
+	      amateurList = Files.readAllLines(getFilesFromTeamcenter(operationId, "").toPath());
 	    }
 	 
 	    catch (IOException e)

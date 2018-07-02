@@ -5,8 +5,7 @@ public class GetMachineDataFromTeamcenter {
 	public GetMachineDataFromTeamcenter() 
 	{
 		//TODO
-		//Compare Machine Id which comes from AR with GEtMachinesFromTeamcenter(getMachineIds()).
-		//If the Ids are equal, bring machine CAD file from teamcenter
+		//Bring currentMachine (from MachineDetails.java) CAD and related data from Teamcenter
 	}
 
 }

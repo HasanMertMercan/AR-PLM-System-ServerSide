@@ -33,6 +33,7 @@ public class UserDetails {
 				} catch (NotLoadedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					System.out.println("User " + user + "could not load!");
 				}
 			}
 		}

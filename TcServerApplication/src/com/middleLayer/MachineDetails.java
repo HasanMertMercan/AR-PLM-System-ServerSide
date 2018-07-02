@@ -2,6 +2,7 @@ package com.middleLayer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.teamcenter.soa.exceptions.NotLoadedException;
 
@@ -10,24 +11,42 @@ public class MachineDetails {
 	private List<MachineProperties> machineList = new ArrayList<MachineProperties>();
 	private XMLReaderMachine xmlReaderMachine = new XMLReaderMachine();
 	private String[] currentMachine = null;
-	private GetFactoryDataFromTeamcenter gmftc = new GetFactoryDataFromTeamcenter();
 
-	public MachineDetails() throws NotLoadedException
+	//machineId --> machineId which comes from AR client
+	public MachineDetails(String machineId) throws NotLoadedException
 	{
 		machineList = xmlReaderMachine.getMachinePropertiesList();
 		
-		createCurrentMachine: {
-			for(int i = 0; i < machineList.size(); i++) 
+		//This code gives random error states to machines
+		for(int i = 0; i < machineList.size(); i++) 
+		{
+			int randomNum = ThreadLocalRandom.current().nextInt(0, 3);
+			
+			if(randomNum == 0) 
 			{
-				if(machineList.get(i).getId() == gmftc.getMachineIds().get(i).getId()) //Ikinci arguman dogru degil. Hangi makinada isek onun IDsi ile karsilastirmamiz lazim.
-				{
-					currentMachine[0] = machineList.get(i).getId();				//User Id
-					currentMachine[1] = machineList.get(i).getxAxis();			//x-Axis
-					currentMachine[2] = machineList.get(i).getyAxis();			//y-Axis
-					currentMachine[3] = machineList.get(i).getErrorState();		//Error State
-					
-					break createCurrentMachine;
-				}
+				machineList.get(i).setErrorState("0");		//Green State, Regular Maintenance
+			}
+			else if(randomNum == 1) 
+			{
+				machineList.get(i).setErrorState("1");		//Yellow State, There is a problem but not urgent
+			}
+			else 
+			{
+				machineList.get(i).setErrorState("2");		//Red State, Needs to be taken care as soon as possible
+			}
+		}
+		
+		
+		for(int j = 0; j < machineList.size(); j++) 
+		{
+			if(machineList.get(j).getId() == machineId) 
+			{
+				currentMachine[0] = machineList.get(j).getId();				//User Id
+				currentMachine[1] = machineList.get(j).getxAxis();			//x-Axis
+				currentMachine[2] = machineList.get(j).getyAxis();			//y-Axis
+				currentMachine[3] = machineList.get(j).getErrorState();		//Error State
+				
+				break;
 			}
 		}
 		

@@ -8,15 +8,15 @@ import com.teamcenter.soa.exceptions.NotLoadedException;
 
 public class GetFactoryDataFromTeamcenter {
 
-	private List<MachineProperties> machineIds = new ArrayList<MachineProperties>();
+	private ArrayList<MachineProperties> machineIds = new ArrayList<MachineProperties>();
 	private String machines;
 	private String[] factoryResource, firstMachine, secondMachine, thirdMachine, fourthMachine, fifthMachine, sixthMachine, seventhMachine, eightMachine, ninethMachine, tenthMachine;
 	
-	
+	//factoryId will come from AR client.
 	//This method is for Optimisation algorithm.
-	public GetFactoryDataFromTeamcenter() 
+	public GetFactoryDataFromTeamcenter(String factoryId) 
 	{
-		factoryResource = getFactoryInformation(null).split("\\s"); //Burayi Kubraya sor, Factory Idsini nereden vermek daha mantikli?
+		factoryResource = getFactoryInformation(factoryId).split("\\s"); 
 		
 		//Print Some Debug Information
 		for(int i = 0; i < factoryResource.length; i++) 
@@ -53,10 +53,12 @@ public class GetFactoryDataFromTeamcenter {
 		}
 	}
 	
-	public String getFactoryInformation(String factoryId) 
+	private String getFactoryInformation(String factoryId) 
 	{
 		//DataManagementService dmService = DataManagementService.getService(AppXSession.getConnection());
-		Mfg0BvrPlantResource plantResource = new Mfg0BvrPlantResource(null, null); //Buradaki null durumlari Kubraya sor.
+		//TODO-simdilik factoryID gelmiyor. Fabrika ID erisilebildiginde bu kodu yeniden duzenle,
+		
+		Mfg0BvrPlantResource plantResource = new Mfg0BvrPlantResource(null, factoryId); 
 		
 		try {
 			machines = plantResource.get_bl_rev_ps_children();
