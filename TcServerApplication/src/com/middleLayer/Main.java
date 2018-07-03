@@ -49,49 +49,6 @@ public class Main {
 		createTeamcenterSession(teamcenterHost, username, password);
 	}
 	
-	@SuppressWarnings("null")
-	private List<String> getInstructions(String operationId) throws Exception
-	{
-		List<String> amateurList = new ArrayList<String>();
-		UserDetails userDetails = null;
-		String[] gcu = userDetails.getCurrentUser(); 
-		
-	    try
-	    {
-	      amateurList = Files.readAllLines(getFilesFromTeamcenter(operationId, "").toPath());
-	    }
-	 
-	    catch (IOException e)
-	    {
-	      e.printStackTrace();
-	    }
-	    
-	    List<String> expertList = new ArrayList<String>();
-	    List<String> mediumList = new ArrayList<String>();
-	    
-	    //Separate lists based on the users experience
-	    for(int i = 0; i<amateurList.size(); i++) 
-	    {
-	    	if(amateurList.get(i) == "1")
-	    		expertList.add(amateurList.get(i));
-	    	
-	    	if(amateurList.get(i) == "1" || amateurList.get(i) == "2")
-	    		mediumList.add(amateurList.get(i));	
-	    }
-	    
-	    
-	    //Write the code which determines which list will be returned based on user level!!
-	    if(gcu[3].equals("3")/*|| operationType == userProfession*/) {
-	    	return amateurList;
-	    }
-	    else if(gcu[3].equals("2")) {
-	    	return mediumList;
-	    }
-	    else {
-	    	return expertList;
-	    }
-	}
-	
 	/*This section will be in the AR application
 	//Request for additional information
 	@SuppressWarnings("null")
