@@ -2,7 +2,6 @@ package com.middleLayer;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,7 +13,8 @@ import org.w3c.dom.NodeList;
 
 public class XMLReaderOperation {
 	
-	private List<OperationProperties> operationProperties = new ArrayList<OperationProperties>();
+	private ArrayList<OperationProperties> operationProperties = new ArrayList<OperationProperties>();
+	private ArrayList<ToolProperties> toolProperties = new ArrayList<ToolProperties>();
 	
 	public XMLReaderOperation() 
 	{
@@ -28,11 +28,16 @@ public class XMLReaderOperation {
             document.getDocumentElement().normalize();
              
             NodeList nodeList = document.getElementsByTagName("operation");
+            NodeList nodeList2 = document.getElementsByTagName("tool");
             
             for (int i = 0; i < nodeList.getLength(); i++) {
             	operationProperties.add(getOperationProperties(nodeList.item(i)));
             }
- 
+            
+            for (int i = 0; i < nodeList2.getLength(); i++) 
+            {
+            	toolProperties.add(getToolProperties(nodeList2.item(i)));
+            }
             
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -40,7 +45,12 @@ public class XMLReaderOperation {
         }
 	}
 	
-	public List<OperationProperties> getOperationPropertiesList() 
+	public ArrayList<ToolProperties> getToolPropertiesList()
+	{
+		return toolProperties;
+	}
+	
+	public ArrayList<OperationProperties> getOperationPropertiesList() 
 	{
 		return operationProperties;
 	}
@@ -57,6 +67,19 @@ public class XMLReaderOperation {
 
         return op;
     }
+	
+	private static ToolProperties getToolProperties(Node node) 
+	{
+		ToolProperties tp = new ToolProperties();
+		if(node.getNodeType() == Node.ELEMENT_NODE) 
+		{
+			Element element = (Element) node;
+			tp.setToolId(getTagValue("toolid", element));
+			tp.setToolName(getTagValue("toolname", element));
+		}
+		
+		return tp;
+	}
 	
 	private static String getTagValue(String tag, Element element) {
         NodeList nodeList = element.getElementsByTagName(tag).item(0).getChildNodes();

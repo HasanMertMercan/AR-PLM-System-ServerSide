@@ -4,11 +4,33 @@
 		<id>1234</id>
 		<name>Hasan Mert Mercan</name>
 		<profession>1</profession>
+		<tools>
+			<tool>
+				<id>1</id>
+				<name>Screw Driver</name>
+			</tool>
+		</tools>
+		<tools>
+			<tool>
+				<id>2</id>
+				<name>hammer</name>
+			</tool>
+		</tools>
 	</operation>
 	<operation>
 		<id>4321</id>
 		<name>Fatma Kübra Tugsal</name>
 		<profession>2</profession>
+		<tools>
+			<tool>
+				<id>3</id>
+				<name>nippers</name>
+			</tool>
+			<tool>
+				<toolid>2</toolid>
+				<toolname>hammer</toolname>
+			</tool>
+		</tools>
 	</operation>
 </operations>
 
