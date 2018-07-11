@@ -5,6 +5,8 @@ public class OperationProperties {
 	String _id;
 	String _name;
 	String _profession;
+	String _fileName;
+	String _revisionId;
 	String[] _toolIds;
 	
 	public String getName() {
@@ -24,6 +26,26 @@ public class OperationProperties {
     }
     public void setProfession(String profession) {
         this._profession = profession;
+    }
+    
+    public String getFileName() 
+    {
+    	return _fileName;
+    }
+    
+    public void setFileName(String filename) 
+    {
+    	this._fileName = filename;
+    }
+    
+    public String getRevisionId() 
+    {
+    	return _revisionId;
+    }
+    
+    public void setRevisionId(String revisionId) 
+    {
+    	this._revisionId = revisionId;
     }
     
     public String[] getToolIds() 

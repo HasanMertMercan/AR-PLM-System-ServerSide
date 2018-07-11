@@ -25,6 +25,8 @@ public class OperationDetails {
 					currentOperation.get(0)._id = operationList.get(i).getId();					//Operation Id
 					currentOperation.get(0)._name = operationList.get(i).getName();				//Operation Name
 					currentOperation.get(0)._profession = operationList.get(i).getProfession();	//Operation Profession
+					currentOperation.get(0)._fileName = operationList.get(i).getFileName();		//Operation Instruction File
+					currentOperation.get(0)._revisionId = operationList.get(i).getRevisionId();	//Operation Revision Id
 					currentOperation.get(0)._toolIds = operationList.get(i).getToolIds();		//Operation`s toolList
 					
 					break createCurrentOperation;

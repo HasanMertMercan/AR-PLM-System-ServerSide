@@ -1,61 +1,46 @@
 package com.middleLayer;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 import com.teamcenter.soa.exceptions.NotLoadedException;
 
 public class MachineDetails {
 	
-	private List<MachineProperties> machineList = new ArrayList<MachineProperties>();
+	private ArrayList<MachineProperties> machineList = new ArrayList<MachineProperties>();
 	private XMLReaderMachine xmlReaderMachine = new XMLReaderMachine();
-	private String[] currentMachine = null;
+	private ArrayList<MachineProperties> currentMachine = null;
 
 	//machineId --> machineId which comes from AR client
-	public MachineDetails(String machineId) throws NotLoadedException
+	public MachineDetails(String machineId, String fileName, String revisionId, Boolean cadData, Boolean optimisation) throws NotLoadedException
 	{
 		machineList = xmlReaderMachine.getMachinePropertiesList();
-		
-		//This code gives random error states to machines
-		for(int i = 0; i < machineList.size(); i++) 
-		{
-			int randomNum = ThreadLocalRandom.current().nextInt(0, 3);
-			
-			if(randomNum == 0) 
-			{
-				machineList.get(i).setErrorState("0");		//Green State, Regular Maintenance
-			}
-			else if(randomNum == 1) 
-			{
-				machineList.get(i).setErrorState("1");		//Yellow State, There is a problem but not urgent
-			}
-			else 
-			{
-				machineList.get(i).setErrorState("2");		//Red State, Needs to be taken care as soon as possible
-			}
-		}
-		
+		GetMachineDataFromTeamcenter getMachineDataFromTeamcenter = new GetMachineDataFromTeamcenter(machineId, fileName, revisionId);
 		
 		for(int j = 0; j < machineList.size(); j++) 
 		{
 			if(machineList.get(j).getId() == machineId) 
 			{
-				currentMachine[0] = machineList.get(j).getId();				//User Id
-				currentMachine[1] = machineList.get(j).getxAxis();			//x-Axis
-				currentMachine[2] = machineList.get(j).getyAxis();			//y-Axis
-				currentMachine[3] = machineList.get(j).getErrorState();		//Error State
+				currentMachine.get(0).setId(machineList.get(j).getId());						//User Id
+				currentMachine.get(0).setxAxis(machineList.get(j).getxAxis());					//x-Axis
+				currentMachine.get(0).setyAxis(machineList.get(j).getyAxis());					//y-Axis
+				
+				//ErrorState yalnizca optimizasyon yapilacagi zaman gelecek
+				if(optimisation == true)
+					currentMachine.get(0).setErrorState(machineList.get(j).getErrorState());		//Error State
 				
 				break;
 			}
 		}
 		
+		//CAD datasi yalnizca cagirildiginda gelecek. Optimizasyon icin bu method cagirildiginda CAD dosyasi cekilmeyecek
+		if(cadData == true)
+		currentMachine.get(0).setMachineCADFile(getMachineDataFromTeamcenter.getMachineData().get(0).getMachineCADFile());
+		
 	}
 	
-	public String[] getCurrentMachine() 
+	public ArrayList<MachineProperties> getCurrentMachine() 
 	{
 		return currentMachine;
-		
 	}
 
 }

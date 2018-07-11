@@ -2,7 +2,6 @@ package com.middleLayer;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,7 +13,7 @@ import org.w3c.dom.NodeList;
 
 public class XMLReaderMachine {
 	
-private List<MachineProperties> machineProperties = new ArrayList<MachineProperties>();
+private ArrayList<MachineProperties> machineProperties = new ArrayList<MachineProperties>();
 	
 	public XMLReaderMachine() 
 	{
@@ -40,7 +39,7 @@ private List<MachineProperties> machineProperties = new ArrayList<MachinePropert
         }
 	}
 	
-	public List<MachineProperties> getMachinePropertiesList() 
+	public ArrayList<MachineProperties> getMachinePropertiesList() 
 	{
 		return machineProperties;
 	}
@@ -64,5 +63,6 @@ private List<MachineProperties> machineProperties = new ArrayList<MachinePropert
         Node node = (Node) nodeList.item(0);
         return node.getNodeValue();
     }
+	
 
 }

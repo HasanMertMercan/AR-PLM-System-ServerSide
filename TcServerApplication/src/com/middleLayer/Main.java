@@ -18,6 +18,7 @@ public class Main {
 	
 	private AppXSession session;
 	private User user;
+	@SuppressWarnings("unused")
 	private FileManagementUtility fileManager;
 	
 	public Main(String teamcenterHost, String username, String password)
