@@ -1,5 +1,6 @@
 package com.middleLayer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GetToolDataFromTeamcenter {
@@ -11,11 +12,10 @@ public class GetToolDataFromTeamcenter {
 	
 	private ArrayList<ToolProperties> toolData = new ArrayList<ToolProperties>();
 	
-	public GetToolDataFromTeamcenter(String toolId, String fileName, String revisionId) 
+	public GetToolDataFromTeamcenter(String toolId, String fileName, String revisionId) throws IOException 
 	{
-		GetFileFromTeamcenter getFileFromTeamcenter = new GetFileFromTeamcenter(toolId, fileName, revisionId);
-		//The CAD converter will be called here!!
-		toolData.get(0).setToolCADFile(getFileFromTeamcenter.getFile());
+		CADConverter cadConverter = new CADConverter(toolId, fileName, revisionId);
+		toolData.get(0).setToolCADFile(cadConverter.getCADFileFinal()); //This slot will be filled by String
 	}
 
 	public ArrayList<ToolProperties> getToolData()

@@ -23,7 +23,8 @@ public class Main {
 	
 	public Main(String teamcenterHost, String username, String password)
 	{
-		createTeamcenterSession(teamcenterHost, username, password);
+		
+		//createTeamcenterSession(teamcenterHost, username, password);
 	}
 	
 	/*This section will be in the AR application

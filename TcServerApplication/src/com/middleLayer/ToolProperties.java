@@ -1,12 +1,11 @@
 package com.middleLayer;
 
-import java.io.File;
 
 public class ToolProperties {
 	
 	private String _toolId;
 	private String _toolName;
-	private File _toolCADFile;
+	private String _toolCADFile;
 	
 	public String getToolId() 
 	{
@@ -28,12 +27,12 @@ public class ToolProperties {
 		this._toolName = toolName;
 	}
 	
-	public File getToolCADFile() 
+	public String getToolCADFile() 
 	{
 		return _toolCADFile;
 	}
 	
-	public void setToolCADFile(File toolCADFile) 
+	public void setToolCADFile(String toolCADFile) 
 	{
 		this._toolCADFile = toolCADFile;
 	}

@@ -1,5 +1,6 @@
 package com.middleLayer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.teamcenter.soa.exceptions.NotLoadedException;
@@ -11,7 +12,7 @@ public class MachineDetails {
 	private ArrayList<MachineProperties> currentMachine = null;
 
 	//machineId --> machineId which comes from AR client
-	public MachineDetails(String machineId, String fileName, String revisionId, Boolean cadData, Boolean optimisation) throws NotLoadedException
+	public MachineDetails(String machineId, String fileName, String revisionId, Boolean cadData, Boolean optimisation) throws NotLoadedException, IOException
 	{
 		machineList = xmlReaderMachine.getMachinePropertiesList();
 		GetMachineDataFromTeamcenter getMachineDataFromTeamcenter = new GetMachineDataFromTeamcenter(machineId, fileName, revisionId);

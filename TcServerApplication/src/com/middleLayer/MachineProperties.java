@@ -1,6 +1,5 @@
 package com.middleLayer;
 
-import java.io.File;
 
 public class MachineProperties {
 	
@@ -8,12 +7,12 @@ public class MachineProperties {
 	private String xAxis;
 	private String yAxis;
 	private String errorState;
-	private File machineCADFile;
+	private String machineCADFile;
 	
-	public File getMachineCADFile() {
+	public String getMachineCADFile() {
 		return machineCADFile;
 	}
-	public void setMachineCADFile(File machineCADFile) {
+	public void setMachineCADFile(String machineCADFile) {
 		this.machineCADFile = machineCADFile;
 	}
 	public String getxAxis() {

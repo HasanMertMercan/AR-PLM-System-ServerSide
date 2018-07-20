@@ -1,5 +1,6 @@
 package com.middleLayer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ToolFinder {
@@ -7,15 +8,14 @@ public class ToolFinder {
 	private ArrayList<ToolProperties> currentTool = new ArrayList<ToolProperties>();
 
 	//This tool id comes from AR client. When operator need to see the tool, this id will be sent by AR client to the server
-	public ToolFinder(String toolId, String fileName, String revisionId) 
+	public ToolFinder(String toolId, String fileName, String revisionId) throws IOException 
 	{
 		GetToolDataFromTeamcenter getToolDataFromTeamcenter = new GetToolDataFromTeamcenter(toolId, fileName, revisionId);
 		for(int i = 0; i < operationDetails.getCurrentOperationsToolList().size(); i++) 
 		{
 			if(toolId == operationDetails.getCurrentOperationsToolList().get(i).getToolId()) 
 			{
-				//TODO
-				//GetToolDataFromTeamcenter will be called!!								
+				//TODO			
 				currentTool.get(0).setToolCADFile(getToolDataFromTeamcenter.getToolData().get(0).getToolCADFile());
 				break;
 			}
