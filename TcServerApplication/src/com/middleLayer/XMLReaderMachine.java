@@ -18,7 +18,7 @@ private ArrayList<MachineProperties> machineProperties = new ArrayList<MachinePr
 	public XMLReaderMachine() 
 	{
 		try {
-            File file = new File("MachineProperty.xml");
+            File file = new File("C:\\eclipse\\TcServerApplication\\src\\MachineProperty.xml");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
              
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -31,6 +31,13 @@ private ArrayList<MachineProperties> machineProperties = new ArrayList<MachinePr
             for (int i = 0; i < nodeList.getLength(); i++) {
             	machineProperties.add(getMachineProperties(nodeList.item(i)));
             }
+            
+            /*for(int i = 0; i < machineProperties.size(); i++) 
+            {
+                System.out.println(machineProperties.get(i).getId());
+                System.out.println(machineProperties.get(i).getErrorState());
+                System.out.println(machineProperties.get(i).getxAxis() +" "+ machineProperties.get(i).getyAxis());
+            }*/
  
             
         } catch (Exception e) {

@@ -6,17 +6,19 @@ import java.util.concurrent.ThreadLocalRandom;
 public class AssignRandomError {
 
 	private ArrayList<MachineProperties> machineList = new ArrayList<MachineProperties>();
-	private XMLReaderMachine xmlReaderMachine = new XMLReaderMachine();
-
+	//private XMLReaderMachine xmlReaderMachine = new XMLReaderMachine();
+	
 	public AssignRandomError(String factoryId) 
 	{
 
-		machineList = xmlReaderMachine.getMachinePropertiesList();
+		//machineList = xmlReaderMachine.getMachinePropertiesList();
 		GetFactoryDataFromTeamcenter getFactoryDataFromTeamcenter = new GetFactoryDataFromTeamcenter(factoryId);
 		
 		for(int i = 0; i < getFactoryDataFromTeamcenter.getMachineIds().size(); i++) 
 		{
-			machineList.get(i).setId(getFactoryDataFromTeamcenter.getMachineIds().get(i).getId());
+			MachineDetails machineDetails = new MachineDetails(getFactoryDataFromTeamcenter.getMachineIds().get(i).getId());
+			machineList.add(machineDetails.getCurrentMachine().get(0));
+			//machineList.get(i).setId(getFactoryDataFromTeamcenter.getMachineIds().get(i).getId());
 		}
 		
 		//This code gives random error states to machines
@@ -40,6 +42,7 @@ public class AssignRandomError {
 		
 	}
 	
+	//Send this list to ARClient and ask user to select yellow errors
 	public ArrayList<MachineProperties> getMachineErrorList()
 	{
 		return machineList;

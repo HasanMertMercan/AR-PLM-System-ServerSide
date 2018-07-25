@@ -6,7 +6,7 @@ import com.teamcenter.soa.client.FileManagementUtility;
 import com.teamcenter.soa.common.ObjectPropertyPolicy;
 import com.teamcenter.soa.exceptions.NotLoadedException;
 import com.teamcenter.soa.client.model.strong.User;
-
+import com.optimisation.InitializeOptimisation;
 import com.teamcenter.clientx.*;
 import com.teamcenter.services.strong.core.SessionService;
 
@@ -14,6 +14,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		InitializeOptimisation initializeOptimisation = new InitializeOptimisation();
+		initializeOptimisation.getOptimisedRootForGreenMachines();
 	}
 	
 	private AppXSession session;

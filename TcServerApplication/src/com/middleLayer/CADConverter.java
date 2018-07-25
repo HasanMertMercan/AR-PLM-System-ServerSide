@@ -9,11 +9,10 @@ import org.apache.commons.io.FileUtils;
 
 public class CADConverter {
 	
-	private String objText = "";
 	private String CADtxtFile;
 	private String CADFileFinal;
 	private File oldFile, actualFile;
-	private String newDirection, path, newFileName;
+	private String newDirection, newFileName;
 	private String[] arr;
 	
 	//This method will be called whenever a jt file taken from the teamcenter (Machine data, tool data)
@@ -25,8 +24,7 @@ public class CADConverter {
 		actualFile = new File(newDirection, fileName);
 		FileUtils.copyFile(oldFile, actualFile);
 		new ExportOBJ(actualFile.getAbsolutePath()); //This method creates .obj file in the same path!
-		path = actualFile.getAbsolutePath();
-		arr = path.split(".");
+		arr = actualFile.getAbsolutePath().split(".");
 		newFileName = arr[0] + ".obj"; 
 		CADtxtFile = changeFileExtension(newFileName); //The new file which comes from converter will be the parameter of this line
 		CADFileFinal = readCADtxtFile(CADtxtFile); //This is the final string for Objects CAD data
@@ -38,13 +36,15 @@ public class CADConverter {
 	{
 		String[] extension = OBJFileName.split(".");
 		File txtFile = new File(extension[0] + ".txt");
-		OBJFileName = txtFile.getPath();
+		actualFile.renameTo(txtFile);
+		OBJFileName = actualFile.getName();
 		
 		return OBJFileName;
 	}
 	
 	private String readCADtxtFile(String TxtFilePath) throws IOException 
 	{
+		String objText = "";
 		String line = "";
 		BufferedReader br = new BufferedReader(new FileReader(TxtFilePath)); 
 		while((line = br.readLine()) != null) 
