@@ -24,5 +24,11 @@ public class TourManager {
         return destinationCities.size();
     }
     
+    //Clear the destinationCities ArrayList whenever start to new optimisation
+    public static void clearDestinationCities() 
+    {
+    	destinationCities.clear();
+    }
+    
 
 }

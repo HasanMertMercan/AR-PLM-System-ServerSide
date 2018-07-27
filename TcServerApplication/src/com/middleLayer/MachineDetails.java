@@ -4,28 +4,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.properties.MachineProperties;
 import com.teamcenter.soa.exceptions.NotLoadedException;
+import com.xmlreaders.XMLReaderMachine;
 
 public class MachineDetails {
 	
-	private ArrayList<MachineProperties> machineList = new ArrayList<MachineProperties>();
 	private XMLReaderMachine xmlReaderMachine = new XMLReaderMachine();
 	private ArrayList<MachineProperties> currentMachine = new ArrayList<MachineProperties>();
+	
+	private ArrayList<MachineProperties> temporaryMachineList = new ArrayList<MachineProperties>();
 
-	//Constructor for basic operations, dummy optimisation
+	//Constructor for basic operations, Used for testing purposes 
 	public MachineDetails() 
 	{
-		
-		//machineList = xmlReaderMachine.getMachinePropertiesList();
-		for(int j = 0; j < xmlReaderMachine.getMachinePropertiesList().size(); j++) 
-		{
-			/*currentMachine.get(j).setId(xmlReaderMachine.getMachinePropertiesList().get(j).getId());						//User Id
-			currentMachine.get(j).setxAxis(xmlReaderMachine.getMachinePropertiesList().get(j).getxAxis());					//x-Axis
-			currentMachine.get(j).setyAxis(xmlReaderMachine.getMachinePropertiesList().get(j).getyAxis());					//y-Axis
-			int randomNum = ThreadLocalRandom.current().nextInt(0, 3);
-			currentMachine.get(j).setErrorState(Integer.toString(randomNum));				//Error State
-*/			
-			
+		int size = xmlReaderMachine.getMachinePropertiesList().size();
+		for(int j = 0; j < size; j++) 
+		{	
 			currentMachine.add(xmlReaderMachine.getMachinePropertiesList().get(j));
 			int randomNum = ThreadLocalRandom.current().nextInt(0, 3);
 			currentMachine.get(j).setErrorState(Integer.toString(randomNum));
@@ -33,40 +28,38 @@ public class MachineDetails {
 		}
 	}
 	
-	//For optimisation
-	public MachineDetails(String machineId) 
+	//For optimisation with Teamcenter information. Used by Initialize optimisation class
+	/*public MachineDetails(String machineId) 
 	{
-		for(int j = 0; j < machineList.size(); j++) 
+		int size = xmlReaderMachine.getMachinePropertiesList().size();
+		for(int j = 0; j < size; j++) 
 		{
-			if(machineList.get(j).getId() == machineId) 
+			if(xmlReaderMachine.getMachinePropertiesList().get(j).getId() == machineId) 
 			{
-				currentMachine.get(0).setId(machineList.get(j).getId());						//User Id
-				currentMachine.get(0).setxAxis(machineList.get(j).getxAxis());					//x-Axis
-				currentMachine.get(0).setyAxis(machineList.get(j).getyAxis());					//y-Axis
-				currentMachine.get(0).setErrorState(machineList.get(j).getErrorState());		//Error State
-				
+				currentMachine.add(xmlReaderMachine.getMachinePropertiesList().get(j));
+			}
+		}
+	}*/
+	
+	//Constructor to get MachineCADData
+	//Ana algorithmada makine id si okutulunca bu methodu cagirma. Dogrudan daha evvel gelen (AssignRandomError) listedeki makinelerin arasinda bul ve datayi dondur.
+	public MachineDetails(String machineId) throws NotLoadedException, IOException
+	{
+		temporaryMachineList = xmlReaderMachine.getMachinePropertiesList();
+		int size = temporaryMachineList.size();
+		
+		for(int j = 0; j < size; j++) 
+		{
+			if(temporaryMachineList.get(j).getId().equals(machineId)) 
+			{
+				String fileName = temporaryMachineList.get(j).getFileName();
+				String revisionId = temporaryMachineList.get(j).getRevisionId();
+				GetMachineDataFromTeamcenter getMachineDataFromTeamcenter = new GetMachineDataFromTeamcenter(machineId, fileName, revisionId);
+				temporaryMachineList.get(j).setMachineCADFile(getMachineDataFromTeamcenter.getMachineData().get(0).getMachineCADFile());
+				currentMachine.add(temporaryMachineList.get(j));
 				break;
 			}
 		}
-	}
-	
-	//Constructor to get MachineCADData
-	public MachineDetails(String machineId, String fileName, String revisionId) throws NotLoadedException, IOException
-	{
-		machineList = xmlReaderMachine.getMachinePropertiesList();
-		GetMachineDataFromTeamcenter getMachineDataFromTeamcenter = new GetMachineDataFromTeamcenter(machineId, fileName, revisionId);
-		
-		for(int j = 0; j < machineList.size(); j++) 
-		{
-			if(machineList.get(j).getId() == machineId) 
-			{
-				currentMachine.get(0).setId(machineList.get(j).getId());						//User Id
-				currentMachine.get(0).setxAxis(machineList.get(j).getxAxis());					//x-Axis
-				currentMachine.get(0).setyAxis(machineList.get(j).getyAxis());					//y-Axis
-				currentMachine.get(0).setErrorState(machineList.get(j).getErrorState());		//Error State
-			}
-		}
-		currentMachine.get(0).setMachineCADFile(getMachineDataFromTeamcenter.getMachineData().get(0).getMachineCADFile());
 		
 	}
 	

@@ -1,193 +1,139 @@
 package com.middleLayer;
 
-//import java.io.File;
+import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.List;
-/*//import java.util.UUID;
 
-//import com.teamcenter.clientx.AppXSession;
-
-import com.teamcenter.services.strong.core.DataManagementService;
-import com.teamcenter.services.strong.core._2008_06.DataManagement.AttrInfo;
-import com.teamcenter.services.strong.core._2008_06.DataManagement.GetItemAndRelatedObjectsInfo;
-import com.teamcenter.services.strong.core._2008_06.DataManagement.GetItemAndRelatedObjectsItemOutput;
-import com.teamcenter.services.strong.core._2008_06.DataManagement.GetItemAndRelatedObjectsResponse;
-import com.teamcenter.services.strong.core._2008_06.DataManagement.RevisionOutput;
-
-import com.teamcenter.soa.client.model.ModelObject;
-import com.teamcenter.soa.client.FileManagementUtility;
-import com.teamcenter.soa.client.GetFileResponse;
-import com.teamcenter.soa.client.model.strong.Dataset;*/
+import com.properties.UserProperties;
+import com.teamcenter.soa.exceptions.NotLoadedException;
 
 public class GetOperationDataFromTeamcenter {
 
-	private UserDetails userDetails = null;
-	private String[] gcu = userDetails.getCurrentUser(); 
-	private List<String> amateurList = new ArrayList<String>();
-    private List<String> expertList = new ArrayList<String>();
-    private List<String> mediumList = new ArrayList<String>();
-	//private FileManagementUtility fileManager;
+	private ArrayList<UserProperties> currentUser = new ArrayList<UserProperties>();
+	private OperationDetails operationDetails;
+	private UserDetails userDetails;
 	
+	private int userProfession;
+	private int operationProfession;
+	private int userLevel;
 	
+	private ArrayList<String> temporaryList = new ArrayList<String>();
+	private ArrayList<String> amateurList = new ArrayList<String>();
+    private ArrayList<String> expertList = new ArrayList<String>();
+    private ArrayList<String> mediumList = new ArrayList<String>();
+	
+	//Parameters come from QR (ARClient)
 	//operationId --> currentOperation.get(0).operationId
 	//fileName    --> currentOperation.get(0).filename
 	//revisionId  --> currentOperation.get(0).revisionId
-	public GetOperationDataFromTeamcenter(String operationId, String fileName, String revisionId) 
+	public GetOperationDataFromTeamcenter(String operationId, String fileName, String revisionId) throws NotLoadedException 
 	{
+		currentUser = userDetails.getCurrentUser();
+		userLevel = Integer.parseInt(currentUser.get(0).getLevel());
+		operationDetails = new OperationDetails(operationId);
+		operationProfession = Integer.parseInt(operationDetails.getCurrentOperation().get(0).getProfession());
+		userProfession = Integer.parseInt(userDetails.getCurrentUser().get(0).getProfession());
 		GetFileFromTeamcenter getFileFromTeamcenter = new GetFileFromTeamcenter(operationId, fileName, revisionId);
 		
 	    try 
 	    {
-			amateurList = Files.readAllLines(getFileFromTeamcenter.getFile().toPath());
+	    	int size = Files.readAllLines(getFileFromTeamcenter.getFile().toPath()).size();
+	    	for(int i = 0; i < size; i++) 
+	    	{
+				temporaryList.add(Files.readAllLines(getFileFromTeamcenter.getFile().toPath()).get(i));
+	    	}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	    
 	    //Separate lists based on the users experience
-	    for(int i = 0; i<amateurList.size(); i++) 
+	    for(int i = 0; i<temporaryList.size(); i++) 
 	    {
-	    	if(amateurList.get(i) == "1")
-	    		expertList.add(amateurList.get(i));
+	    	amateurList.add(temporaryList.get(i).substring(2, temporaryList.get(i).length()));
 	    	
-	    	if(amateurList.get(i) == "1" || amateurList.get(i) == "2")
-	    		mediumList.add(amateurList.get(i));	
+	    	if(temporaryList.get(i).substring(0, 1).equals("1"))
+	    		expertList.add(temporaryList.get(i).substring(2, temporaryList.get(i).length()));
+	    	
+	    	if(temporaryList.get(i).substring(0, 1).equals("1") || temporaryList.get(i).substring(0, 1).equals("2"))
+	    		mediumList.add(temporaryList.get(i).substring(2, temporaryList.get(i).length()));	
 	    }
-	    
 	}
 	
-	public List<String> getInstructionList()
+	//Test Constructor
+	public GetOperationDataFromTeamcenter() throws NotLoadedException 
 	{
-
+		userDetails = new UserDetails("e1");
+		currentUser = userDetails.getCurrentUser();
+		userLevel = Integer.parseInt(currentUser.get(0).getLevel());
+		operationDetails = new OperationDetails("1234");
+		operationProfession = Integer.parseInt(operationDetails.getCurrentOperation().get(0).getProfession());
+		userProfession = Integer.parseInt(userDetails.getCurrentUser().get(0).getProfession());
+		File file = new File("C:\\Teamcenter önemli\\lASTIK dEGISTIRMEK.txt");
+		
+	    try 
+	    {
+	    	int size = Files.readAllLines(file.toPath()).size();
+	    	for(int i = 0; i < size; i++) 
+	    	{
+	    		temporaryList.add(Files.readAllLines(file.toPath()).get(i));
+	    	}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+	    //Separate lists based on the users experience
+	    for(int i = 0; i<temporaryList.size(); i++) 
+	    {
+	    	amateurList.add(temporaryList.get(i).substring(2, temporaryList.get(i).length()));
+	    	
+	    	if(temporaryList.get(i).substring(0, 1).equals("1"))
+	    		expertList.add(temporaryList.get(i).substring(2, temporaryList.get(i).length()));
+	    	
+	    	if(temporaryList.get(i).substring(0, 1).equals("1") || temporaryList.get(i).substring(0, 1).equals("2"))
+	    		mediumList.add(temporaryList.get(i).substring(2, temporaryList.get(i).length()));	
+	    }
+	}
+	
+	public ArrayList<String> getInstructionList()
+	{
 	    //Write the code which determines which list will be returned based on user level!!
-	    if(gcu[3].equals("3")/*|| operationType == userProfession*/) {
+	    if(userLevel == 3 || operationProfession != userProfession) 
+	    {
 	    	return amateurList;
 	    }
-	    else if(gcu[3].equals("2")) {
+	    else if(userLevel == 2) 
+	    {
 	    	return mediumList;
 	    }
-	    else {
+	    else if(userLevel == 1 && operationProfession == userProfession)
+	    {
 	    	return expertList;
+	    }
+	    else if(userLevel == 1 && operationProfession != userProfession) 
+	    {
+	    	return amateurList;
+	    }
+	    else 
+	    {
+	    	System.out.println("There is no available list to display for this kind of user!");
+	    	return null;
 	    }
 	}
 	
-	//Store operationid-filename-revisionid in the QR code.
-	//these informations will come from AR client
-	/*private File getInstructionsFromTeamcenter(String operationId, String fileName, String revisionId) throws Exception 
+	public ArrayList<String> getAmateurList()
 	{
-		UUID clientId = UUID.randomUUID();
-		DataManagementService dmService = DataManagementService.getService(AppXSession.getConnection());
-
-		*//** Prepare the search criteria *//*
-		GetItemAndRelatedObjectsInfo[] infos = new GetItemAndRelatedObjectsInfo[1];
-		infos[0] = new GetItemAndRelatedObjectsInfo();
-
-		infos[0].itemInfo.ids = new AttrInfo[]{new AttrInfo()};
-		
-		infos[0].clientId = clientId.toString();
-		infos[0].datasetInfo.filter.name = fileName;
-		infos[0].itemInfo.ids[0].name = "item_id";
-		infos[0].itemInfo.ids[0].value = operationId;
-		infos[0].itemInfo.useIdFirst = true;
-		infos[0].datasetInfo.filter.processing = "All";
-		
-		*//**********************//*
-		*//** Call the services *//*
-		*//**********************//*
-		GetItemAndRelatedObjectsResponse response = dmService.getItemAndRelatedObjects(infos);
-		
-		if (response.output.length == 0)
-		throw new Exception("No item with the ID " + operationId + " was found");
-		else if (response.output.length > 1)
-		throw new Exception("More than one item with the ID " + operationId + " was found");
-		
-		GetItemAndRelatedObjectsItemOutput itemOutput = response.output[0];
-		
-		*//** Print some debug info *//*
-		String name = itemOutput.item.get_object_name();
-		
-		
-		System.out.println("Item name: " + name);
-		System.out.println("Item object string: " + itemOutput.item.get_object_string());
-		System.out.println("Item ID: " + itemOutput.item.get_item_id());
-		System.out.println("Object type: " + itemOutput.item.get_object_type());
-		System.out.println("Object string: " + itemOutput.item.get_object_string());
-		
-		//TODO
-		//Bu kisimdaki Dataseti alabilmek icin oncelikle icindeki "revision" a ulasmak lazim. 
-		//Bu revisiona ulasmak icin de Idleri split ettigimiz yerde "revID" olusturmali ve split edilen kismin kalanini 
-		//parametre olarak gondermeliyiz
-		
-		*//** Note: The revisions in the revision array are stored in descending order (the latest revision first) *//*
-		RevisionOutput revOutput = null;
-		
-		*//************************************************//*
-		*//** Obtain the file through the revision number *//*
-		*//** *//*
-		*//** 001111/2016-04-11#17:06 *//*
-		*//************************************************//*
-		
-		for( RevisionOutput revision : itemOutput.itemRevOutput )
-		{
-			// idParts[1] is "A", "B", "C".
-			if( revisionId.equals( revision.itemRevision.get_item_revision_id() ))
-			{
-				revOutput = revision;
-				break;
-			}
-
-			if( revOutput == null)
-			{
-				throw new RuntimeException("A revision with the ID "+ revisionId +" was not found for the item with ID "+ operationId);
-			}
-			else
-			{
-				revOutput = itemOutput.itemRevOutput[0];
-			}
-		}
-		
-		*//**************************************************************************************//*
-		*//** Print some debug info *//*
-		System.out.println("Latest revision name: "
-		+ revOutput.itemRevision.get_object_name());
-		System.out.println("Latest revision object string: "
-		+ revOutput.itemRevision.get_object_string());
-		System.out.println("Latest revision item ID: "
-		+ revOutput.itemRevision.get_item_revision_id());
-		System.out.println("Latest revision item revision ID: "
-		+ revOutput.itemRevision.get_item_revision_id());
-		*//** It is assumed that only one item corresponds with the ID and revision *//*
-		if (revOutput.datasetOutput.length == 0)
-		{
-			return null;
-		}
-		else if(revOutput.datasetOutput.length > 1)
-		{
-			throw new Exception("The item revision has ambiguous data");
-		}
-		
-		
-		Dataset dataset = revOutput.datasetOutput[0].dataset;
-		
-		
-		*//** Print some debug info *//*
-		System.out.println("Dataset: " + dataset.get_object_name());
-		for (String ref : dataset.get_ref_names())
-		{
-			System.out.println("Dataset reference: " + ref);
-		}
-		
-		*//** Assume there is only one reference contained in the data set (this is the actual file) *//*
-		ModelObject[] references = new ModelObject[] { dataset.get_ref_list()[0] };
-		GetFileResponse fresp = this.fileManager.getFiles(references);
-		
-		*//** Print some debug info *//*
-		System.out.format("Downloaded %d of %d files with %d partial errors.\n", fresp.sizeOfFiles(), references.length, fresp.sizeOfPartialErrors());
-		System.out.println("Amount of files "+fresp.getFiles().length);
-		System.out.println("File "+fresp.getFile(0));
-		System.out.println("Files as path "+fresp.getFile(0).toPath());
-		
-		return fresp.getFile(0);
-	}*/
+		return amateurList;
+	}
+	
+	public ArrayList<String> getMediumList()
+	{
+		return mediumList;
+	}
+	
+	public ArrayList<String> getExpertList()
+	{
+		return expertList;
+	}
 }

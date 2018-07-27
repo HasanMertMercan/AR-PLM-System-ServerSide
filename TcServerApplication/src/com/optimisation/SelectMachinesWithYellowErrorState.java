@@ -2,7 +2,7 @@ package com.optimisation;
 
 import java.util.ArrayList;
 
-import com.middleLayer.MachineProperties;
+import com.properties.MachineProperties;
 
 public class SelectMachinesWithYellowErrorState {
 	
@@ -25,13 +25,11 @@ public class SelectMachinesWithYellowErrorState {
 			else if(machinesWithError.get(i).getErrorState().equals("0")) 
 			{
 				greenStateMachines.add(machinesWithError.get(i));
-				System.out.println(machinesWithError.get(i).getId());
 				
 			}
 			else if(machinesWithError.get(i).getErrorState().equals("2")) 
 			{
 				redStateMachines.add(machinesWithError.get(i));
-				System.out.println(machinesWithError.get(i).getId());
 			}
 		}
 

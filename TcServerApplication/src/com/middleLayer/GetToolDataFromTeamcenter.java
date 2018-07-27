@@ -3,6 +3,8 @@ package com.middleLayer;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.properties.ToolProperties;
+
 public class GetToolDataFromTeamcenter {
 	
 	//TODO
@@ -14,7 +16,9 @@ public class GetToolDataFromTeamcenter {
 	
 	public GetToolDataFromTeamcenter(String toolId, String fileName, String revisionId) throws IOException 
 	{
-		CADConverter cadConverter = new CADConverter(toolId, fileName, revisionId);
+		GetFileFromTeamcenter getFileFromTeamcenter = new GetFileFromTeamcenter(toolId, fileName, revisionId);
+		String absoluteFileName = getFileFromTeamcenter.getFile().getAbsolutePath();
+		CADConverter cadConverter = new CADConverter(absoluteFileName);
 		toolData.get(0).setToolCADFile(cadConverter.getCADFileFinal()); //This slot will be filled by String
 	}
 

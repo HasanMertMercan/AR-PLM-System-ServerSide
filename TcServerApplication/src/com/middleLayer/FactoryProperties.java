@@ -1,5 +1,7 @@
 package com.middleLayer;
 
+import com.properties.MachineProperties;
+
 public class FactoryProperties {
 	
 	private String _factoryId;

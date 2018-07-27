@@ -5,7 +5,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import org.apache.commons.io.FileUtils;
+import java.nio.file.Files;
+
+//import org.apache.commons.io.FileUtils;
 
 public class CADConverter {
 	
@@ -13,31 +15,42 @@ public class CADConverter {
 	private String CADFileFinal;
 	private File oldFile, actualFile;
 	private String newDirection, newFileName;
-	private String[] arr;
+	private String arr;
 	
 	//This method will be called whenever a jt file taken from the teamcenter (Machine data, tool data)
-	public CADConverter(String id, String fileName, String revisionId) throws IOException 
+	public CADConverter(String fileName) throws IOException 
 	{
-		GetFileFromTeamcenter getFileFromTeamcenter = new GetFileFromTeamcenter(id, fileName, revisionId);
-		oldFile = new File(getFileFromTeamcenter.getFile().getAbsolutePath());
-		newDirection = "C:\\CADConversion";
-		actualFile = new File(newDirection, fileName);
-		FileUtils.copyFile(oldFile, actualFile);
-		new ExportOBJ(actualFile.getAbsolutePath()); //This method creates .obj file in the same path!
-		arr = actualFile.getAbsolutePath().split(".");
-		newFileName = arr[0] + ".obj"; 
+		//Burayi test ederken iyice incele
+		oldFile = new File(fileName);
+		newDirection = "C:/CADConversion";
+		String[] files = fileName.split("/");
+		int i = files.length;
+		String filename = newDirection + "/" + files[i-1];
+		actualFile = new File(filename);
+		
+		Files.copy(oldFile.toPath(), actualFile.toPath());
+		//new ExportOBJ(actualFile.getAbsolutePath()); //This method creates .obj file in the same path!
+		//String filePath = actualFile.getAbsolutePath();
+		
+		arr = filename.substring(0, filename.length()-4);
+		
+		//arr = filename.split(".");
+		
+		newFileName = arr + ".obj"; 
 		CADtxtFile = changeFileExtension(newFileName); //The new file which comes from converter will be the parameter of this line
-		CADFileFinal = readCADtxtFile(CADtxtFile); //This is the final string for Objects CAD data
+		CADFileFinal = readCADtxtFile("C:\\Teamcenter önemli\\lASTIK dEGISTIRMEK.txt"); //This is the final string for Objects CAD data
+		
 		
 	}
 	
 	//This method allows us to convert file to .txt
 	private String changeFileExtension(String OBJFileName	/*This will be the filename and path comes from OBJ converter*/) 
 	{
-		String[] extension = OBJFileName.split(".");
-		File txtFile = new File(extension[0] + ".txt");
-		actualFile.renameTo(txtFile);
-		OBJFileName = actualFile.getName();
+		String extension = OBJFileName.substring(0, OBJFileName.length()-4);
+		String txtFile = extension + ".txt";
+		File newTXTFile = new File(txtFile);
+		actualFile.renameTo(newTXTFile);
+		OBJFileName = txtFile;
 		
 		return OBJFileName;
 	}

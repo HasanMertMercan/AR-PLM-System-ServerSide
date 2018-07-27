@@ -2,7 +2,7 @@ package com.optimisation;
 
 import java.util.ArrayList;
 
-import com.middleLayer.MachineProperties;
+import com.properties.MachineProperties;
 
 public class OptimiseRootInsidePlant {
 
@@ -13,6 +13,7 @@ public class OptimiseRootInsidePlant {
 	//Run this method twice; one time for Green error state, one time for Red error state
 	public OptimiseRootInsidePlant(ArrayList<MachineProperties> machinesWithError, int errorState) 
 	{
+		TourManager.clearDestinationCities();
 		city = new City[machinesWithError.size()];
 
         // Create and add our cities
@@ -28,7 +29,7 @@ public class OptimiseRootInsidePlant {
 		
         // Initialize population
         Population pop = new Population(50, true);
-        System.out.println("Initial distance: " + pop.getFittest().getDistance());
+        //System.out.println("Initial distance: " + pop.getFittest().getDistance());
 
         // Evolve population for 100 generations
         pop = GA.evolvePopulation(pop);
@@ -37,10 +38,10 @@ public class OptimiseRootInsidePlant {
         }
 
         // Print final results
-        System.out.println("Finished");
+        /*System.out.println("Finished");
         System.out.println("Final distance: " + pop.getFittest().getDistance());
         System.out.println("Solution:");
-        System.out.println(pop.getFittest());
+        System.out.println(pop.getFittest());*/
         
         for(int i = 0; i < TourManager.numberOfCities(); i++) 
         {
@@ -53,5 +54,6 @@ public class OptimiseRootInsidePlant {
 	public ArrayList<City> getOptimisedRootMachineList() 
 	{
 		return optimisedRootMachineList;
+		
 	}
 }

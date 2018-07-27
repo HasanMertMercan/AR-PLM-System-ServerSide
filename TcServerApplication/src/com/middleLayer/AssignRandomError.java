@@ -1,20 +1,31 @@
 package com.middleLayer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
+
+import com.properties.MachineProperties;
+import com.properties.OperationProperties;
+import com.teamcenter.soa.exceptions.NotLoadedException;
+import com.xmlreaders.XMLReaderOperation;
 
 public class AssignRandomError {
 
 	private ArrayList<MachineProperties> machineList = new ArrayList<MachineProperties>();
+	private XMLReaderOperation xmlReaderOperation = new XMLReaderOperation();
 	//private XMLReaderMachine xmlReaderMachine = new XMLReaderMachine();
 	
-	public AssignRandomError(String factoryId) 
+	private ArrayList<OperationProperties> temporaryOperationList = new ArrayList<OperationProperties>();
+	
+	public AssignRandomError(String factoryId) throws NotLoadedException, IOException 
 	{
 
 		//machineList = xmlReaderMachine.getMachinePropertiesList();
 		GetFactoryDataFromTeamcenter getFactoryDataFromTeamcenter = new GetFactoryDataFromTeamcenter(factoryId);
 		
-		for(int i = 0; i < getFactoryDataFromTeamcenter.getMachineIds().size(); i++) 
+		int size = getFactoryDataFromTeamcenter.getMachineIds().size();
+		
+		for(int i = 0; i < size; i++) 
 		{
 			MachineDetails machineDetails = new MachineDetails(getFactoryDataFromTeamcenter.getMachineIds().get(i).getId());
 			machineList.add(machineDetails.getCurrentMachine().get(0));
@@ -39,6 +50,23 @@ public class AssignRandomError {
 				machineList.get(i).setErrorState("2");		//Red State, Needs to be taken care as soon as possible
 			}
 		}
+		
+
+		temporaryOperationList = xmlReaderOperation.getOperationPropertiesList();
+		int operationSize = temporaryOperationList.size();
+		
+		//Assign Operations to Every Machine based on their ErrorState (Every error cannot occur on every error state)
+		for(int i = 0; i < size; i++) 
+		{
+			for(int j = 0; j < operationSize; j++) 
+			{
+				if(temporaryOperationList.get(j).get_state().equals(machineList.get(i).getErrorState()))
+				{
+					machineList.get(i).setOperationToDo(temporaryOperationList.get(j).getId());
+				}
+			}
+		}
+		
 		
 	}
 	
