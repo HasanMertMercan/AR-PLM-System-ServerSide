@@ -12,8 +12,6 @@ public class MachineDetails {
 	
 	private XMLReaderMachine xmlReaderMachine = new XMLReaderMachine();
 	private ArrayList<MachineProperties> currentMachine = new ArrayList<MachineProperties>();
-	
-	private ArrayList<MachineProperties> temporaryMachineList = new ArrayList<MachineProperties>();
 
 	//Constructor for basic operations, Used for testing purposes 
 	public MachineDetails() 
@@ -28,39 +26,24 @@ public class MachineDetails {
 		}
 	}
 	
-	//For optimisation with Teamcenter information. Used by Initialize optimisation class
-	/*public MachineDetails(String machineId) 
-	{
-		int size = xmlReaderMachine.getMachinePropertiesList().size();
-		for(int j = 0; j < size; j++) 
-		{
-			if(xmlReaderMachine.getMachinePropertiesList().get(j).getId() == machineId) 
-			{
-				currentMachine.add(xmlReaderMachine.getMachinePropertiesList().get(j));
-			}
-		}
-	}*/
-	
 	//Constructor to get MachineCADData
-	//Ana algorithmada makine id si okutulunca bu methodu cagirma. Dogrudan daha evvel gelen (AssignRandomError) listedeki makinelerin arasinda bul ve datayi dondur.
-	public MachineDetails(String machineId) throws NotLoadedException, IOException
+	//machineId --> ARClient, completedMachineList --> The list which returned from AssignOperation
+	public MachineDetails(String machineId, ArrayList<MachineProperties> completedMachineList) throws NotLoadedException, IOException
 	{
-		temporaryMachineList = xmlReaderMachine.getMachinePropertiesList();
-		int size = temporaryMachineList.size();
+		int size = completedMachineList.size();
 		
 		for(int j = 0; j < size; j++) 
 		{
-			if(temporaryMachineList.get(j).getId().equals(machineId)) 
+			if(completedMachineList.get(j).getId().equals(machineId)) 
 			{
-				String fileName = temporaryMachineList.get(j).getFileName();
-				String revisionId = temporaryMachineList.get(j).getRevisionId();
+				String fileName = completedMachineList.get(j).getFileName();
+				String revisionId = completedMachineList.get(j).getRevisionId();
 				GetMachineDataFromTeamcenter getMachineDataFromTeamcenter = new GetMachineDataFromTeamcenter(machineId, fileName, revisionId);
-				temporaryMachineList.get(j).setMachineCADFile(getMachineDataFromTeamcenter.getMachineData().get(0).getMachineCADFile());
-				currentMachine.add(temporaryMachineList.get(j));
+				completedMachineList.get(j).setMachineCADFile(getMachineDataFromTeamcenter.getMachineData().get(0).getMachineCADFile());
+				currentMachine.add(completedMachineList.get(j));
 				break;
 			}
 		}
-		
 	}
 	
 	public ArrayList<MachineProperties> getCurrentMachine() 

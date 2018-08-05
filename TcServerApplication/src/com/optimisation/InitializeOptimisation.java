@@ -3,7 +3,6 @@ package com.optimisation;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.middleLayer.AssignRandomError;
 import com.middleLayer.MachineDetails;
 import com.properties.MachineProperties;
 import com.teamcenter.soa.exceptions.NotLoadedException;
@@ -17,13 +16,15 @@ public class InitializeOptimisation {
 	private ArrayList<City> optimisedRootForRedMachines = new ArrayList<City>();
 	private ArrayList<MachineProperties> distributedListReturnedFromARClient = new ArrayList<MachineProperties>();
 	
-	public InitializeOptimisation(String factoryId) throws NotLoadedException, IOException 
+	public InitializeOptimisation(ArrayList<MachineProperties> completedMachineList) throws NotLoadedException, IOException 
 	{
 		//TODO
 		
-		AssignRandomError assignRandomError = new AssignRandomError(factoryId);
-		SelectMachinesWithYellowErrorState smwys = new SelectMachinesWithYellowErrorState(assignRandomError.getMachineErrorList());
+		SelectMachinesWithYellowErrorState smwys = new SelectMachinesWithYellowErrorState(completedMachineList);
 		machinesWithYellowError = smwys.getYellowStateMachines();
+		machinesWithGreenError = smwys.getGreenStateMachines();
+		machinesWithRedError = smwys.getRedStateMachines();
+		
 		//Listeyi ARClienta gonderen bir method yaz ve "machinesWithError" listesini o methoda yolla
 		//ARClient tarafinda kullaniciya sari makinalarin sorunlarini cozmek isteyip istemedigi sorulacak!
 		//Ask user about yellow state!
@@ -32,23 +33,14 @@ public class InitializeOptimisation {
 		{
 			if(distributedListReturnedFromARClient.get(i).getErrorState().equals("2")) 
 			{
-				smwys.getRedStateMachines().add(distributedListReturnedFromARClient.get(i));
+				machinesWithRedError.add(distributedListReturnedFromARClient.get(i));
 			}
 			else if(distributedListReturnedFromARClient.get(i).getErrorState().equals("0")) 
 			{
-				smwys.getGreenStateMachines().add(distributedListReturnedFromARClient.get(i));
+				machinesWithGreenError.add(distributedListReturnedFromARClient.get(i));
 			}
 		}
 		
-		for(int i = 0; i < smwys.getGreenStateMachines().size(); i++) 
-		{
-			machinesWithGreenError.add(smwys.getGreenStateMachines().get(i));
-		}
-		
-		for(int i = 0; i < smwys.getRedStateMachines().size(); i++) 
-		{
-			machinesWithRedError.add(smwys.getRedStateMachines().get(i));
-		}
 		OptimiseRootInsidePlant optimiseRootInsidePlant = new OptimiseRootInsidePlant(machinesWithGreenError, 0);
 		OptimiseRootInsidePlant optimiseRootInsidePlant2 = new OptimiseRootInsidePlant(machinesWithRedError, 2);
 		optimisedRootForGreenMachines = optimiseRootInsidePlant.getOptimisedRootMachineList();

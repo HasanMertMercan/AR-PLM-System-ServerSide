@@ -29,7 +29,7 @@ public class CADConverter {
 		actualFile = new File(filename);
 		
 		Files.copy(oldFile.toPath(), actualFile.toPath());
-		//new ExportOBJ(actualFile.getAbsolutePath()); //This method creates .obj file in the same path!
+		new ExportOBJ(actualFile.getAbsolutePath()); //This method creates .obj file in the same path!
 		//String filePath = actualFile.getAbsolutePath();
 		
 		arr = filename.substring(0, filename.length()-4);
@@ -38,7 +38,7 @@ public class CADConverter {
 		
 		newFileName = arr + ".obj"; 
 		CADtxtFile = changeFileExtension(newFileName); //The new file which comes from converter will be the parameter of this line
-		CADFileFinal = readCADtxtFile("C:\\Teamcenter önemli\\lASTIK dEGISTIRMEK.txt"); //This is the final string for Objects CAD data
+		CADFileFinal = readCADtxtFile(CADtxtFile); //This is the final string for Objects CAD data
 		
 		
 	}

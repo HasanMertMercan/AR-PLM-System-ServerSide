@@ -1,5 +1,7 @@
 package com.properties;
 
+import java.util.ArrayList;
+
 public class OperationProperties {
 	
 	private String _id;
@@ -7,6 +9,7 @@ public class OperationProperties {
 	private String _profession;
 	private String _fileName;
 	private String _revisionId;
+	private ArrayList<String> _instructions;
 	private String _toolIds;
 	private String _state;
 	
@@ -63,6 +66,12 @@ public class OperationProperties {
 	}
 	public void set_state(String state) {
 		this._state = state;
+	}
+	public ArrayList<String> get_instructions() {
+		return _instructions;
+	}
+	public void set_instructions(ArrayList<String> _instructions) {
+		this._instructions = _instructions;
 	}
 
 }

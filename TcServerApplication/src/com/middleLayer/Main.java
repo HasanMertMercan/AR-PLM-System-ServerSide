@@ -1,11 +1,14 @@
 package com.middleLayer;
 
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 import com.teamcenter.soa.client.FileManagementUtility;
 import com.teamcenter.soa.common.ObjectPropertyPolicy;
 import com.teamcenter.soa.exceptions.NotLoadedException;
 import com.teamcenter.soa.client.model.strong.User;
+import com.communication.CommunicationMain;
 import com.optimisation.InitializeOptimisation;
 import com.teamcenter.clientx.*;
 import com.teamcenter.services.strong.core.SessionService;
@@ -14,60 +17,18 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		/*InitializeOptimisation initializeOptimisation = new InitializeOptimisation();
-		initializeOptimisation.getOptimisedRootForGreenMachines();
-		System.out.println("Final Root Green:");
-		for(int i = 0; i < initializeOptimisation.getOptimisedRootForGreenMachines().size(); i++) 
-		{
-			System.out.println(initializeOptimisation.getOptimisedRootForGreenMachines().get(i));
-		}
-		System.out.println("Final Root Red:");
-		for(int i = 0; i < initializeOptimisation.getOptimisedRootForRedMachines().size(); i++) 
-		{
-			System.out.println(initializeOptimisation.getOptimisedRootForRedMachines().get(i));
-		}*/
 		
-		/*try {
-			GetOperationDataFromTeamcenter getOperationDataFromTeamcenter = new GetOperationDataFromTeamcenter();
-			int a = getOperationDataFromTeamcenter.getAmateurList().size();
-			System.out.println("Amateur List");
-			for(int i = 0; i < a; i++) 
-			{
-				System.out.println(getOperationDataFromTeamcenter.getAmateurList().get(i));
-			}
-
-			int b = getOperationDataFromTeamcenter.getInstructionList().size();
-			System.out.println("Instruction List");
-			for(int i = 0; i < b; i++) 
-			{
-				System.out.println(getOperationDataFromTeamcenter.getInstructionList().get(i));
-			}
-			
-			int c = getOperationDataFromTeamcenter.getExpertList().size();
-			System.out.println("Expert List");
-			for(int i = 0; i < c; i++) 
-			{
-				System.out.println(getOperationDataFromTeamcenter.getExpertList().get(i));
-			}
-			
-			int d = getOperationDataFromTeamcenter.getMediumList().size();
-			System.out.println("Medium List");
-			for(int i = 0; i < d; i++) 
-			{
-				System.out.println(getOperationDataFromTeamcenter.getMediumList().get(i));
-			}
-		} catch (NotLoadedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+		CommunicationMain clientCommunication = new CommunicationMain();
+		clientCommunication.startCommunication();
 		
-		GetMachineDataFromTeamcenter getMachineDataFromTeamcenter = new GetMachineDataFromTeamcenter("C:/Teamcenter önemli/Zuccarello.obj");
+		
+		/*GetMachineDataFromTeamcenter getMachineDataFromTeamcenter = new GetMachineDataFromTeamcenter("C:/Teamcenter önemli/Zuccarello.obj");
 		int size = getMachineDataFromTeamcenter.getMachineData().size();
 		for(int i = 0; i < size; i++) 
 		{
 			System.out.println("Machine CAD Data " + i);
 			System.out.println(getMachineDataFromTeamcenter.getMachineData().get(i).getMachineCADFile());
-		}
+		}*/
 		
 		
 		

@@ -17,10 +17,6 @@ public class SelectMachinesWithYellowErrorState {
 			if(machinesWithError.get(i).getErrorState().equals("1")) 
 			{
 				yellowStateMachines.add(machinesWithError.get(i));
-				/*yellowStateMachines.get(i).setId(machinesWithError.get(i).getId());
-				yellowStateMachines.get(i).setxAxis(machinesWithError.get(i).getxAxis());
-				yellowStateMachines.get(i).setyAxis(machinesWithError.get(i).getyAxis());
-				yellowStateMachines.get(i).setErrorState(machinesWithError.get(i).getErrorState());*/
 			}
 			else if(machinesWithError.get(i).getErrorState().equals("0")) 
 			{
@@ -56,6 +52,7 @@ public class SelectMachinesWithYellowErrorState {
 	{
 		return greenStateMachines;
 	}
+	
 	public ArrayList<MachineProperties> getRedStateMachines()
 	{
 		return redStateMachines;
