@@ -1,7 +1,6 @@
 package com.middleLayer;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.properties.MachineProperties;
 import com.teamcenter.soa.client.model.strong.Mfg0BvrPlantResource;
@@ -71,7 +70,7 @@ public class GetFactoryDataFromTeamcenter {
 		return machines;
 	}
 	
-	public List<MachineProperties> getMachineIds() 
+	public ArrayList<MachineProperties> getMachineIds() 
 	{
 		return machineIds;
 	}

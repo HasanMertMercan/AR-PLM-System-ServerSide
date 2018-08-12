@@ -14,6 +14,11 @@ public class City {
         this._errorState = errorState;
     }
     
+    public String getMachineId() 
+    {
+    	return this._machineId;
+    }
+    
     // Gets city's x coordinate
     public int getX(){
         return this.x;

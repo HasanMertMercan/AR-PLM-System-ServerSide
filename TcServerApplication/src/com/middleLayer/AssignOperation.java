@@ -25,7 +25,7 @@ public class AssignOperation {
 			{
 				if(temporaryOperationList.get(j).get_state().equals(machinesWithErrorList.get(i).getErrorState()))
 				{
-					machinesWithErrorList.get(i).setOperationToDo(temporaryOperationList.get(j).getId());
+					machinesWithErrorList.get(i).setOperationToDo(temporaryOperationList.get(j).getName());
 				}
 			}
 		}
